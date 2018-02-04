@@ -1,17 +1,25 @@
 """
 This file initializes your application and brings together all of the various components.
 """
+import os
 from flask import Flask
 
-app = Flask(__name__, instance_relative_config=True) # instance_relative_config implies loading config from instance folder
+from app.common import config
+from blueprints.admin.views import admin
+from blueprints.main.views import main
 
-# Load the default configuration
-app.config.from_object('config.default')
+app = Flask(__name__,
+            instance_relative_config=True)  # instance_relative_config implies loading config from instance folder
 
-# Load the configuration from the instance folder
-app.config.from_pyfile('config.py')
 
-# Load the file specified by the APP_CONFIG_FILE environment variable
-# Variables defined here will override those in the default configuration
-# The value of the environment variable should be the absolute path to a configuration file.
-app.config.from_envvar('APP_CONFIG_FILE')
+def configure_app():
+    # Load the requested configuration from config module which remarked in env var
+    config_name = os.getenv('FLASK_CONFIGURATION', 'default')
+    app.config.from_object(config[config_name])
+    # Load the configuration from the instance folder
+    app.config.from_pyfile('config.py', silent=True)
+
+configure_app()
+
+app.register_blueprint(main, url_prefix='/')
+app.register_blueprint(admin, url_prefix='/admin')
