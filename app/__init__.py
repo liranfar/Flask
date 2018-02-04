@@ -1,10 +1,13 @@
 """
 This file initializes your application and brings together all of the various components.
 """
+import logging
 import os
 from flask import Flask
 
 from app.common import config
+from app.log.log import setup_logging
+
 from blueprints.admin.views import admin
 from blueprints.main.views import main
 
@@ -19,7 +22,9 @@ def configure_app():
     # Load the configuration from the instance folder
     app.config.from_pyfile('config.py', silent=True)
 
-configure_app()
 
+configure_app()
+setup_logging(default_level=logging.DEBUG)
+logging.debug("Logger has been set up successfully")
 app.register_blueprint(main, url_prefix='/')
 app.register_blueprint(admin, url_prefix='/admin')
