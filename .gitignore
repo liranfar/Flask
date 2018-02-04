@@ -2,3 +2,4 @@ venv/
 .idea/
 instance/
 *.pyc
+start.sh
