@@ -3,3 +3,4 @@ venv/
 instance/
 *.pyc
 start.sh
+db/
