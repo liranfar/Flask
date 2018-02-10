@@ -2,11 +2,13 @@ from app import db
 
 
 class Book(db.Model):
+    __tablename__ = 'books'
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     rating = db.Column(db.Integer)
     image = db.Column(db.String(30))
-    author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('authors.id'))
     author = db.relationship('Author',
                              backref=db.backref('books', lazy='joined'))
 

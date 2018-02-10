@@ -2,5 +2,4 @@ venv/
 .idea/
 instance/
 *.pyc
-start.sh
 db/
