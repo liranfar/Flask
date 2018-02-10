@@ -26,7 +26,7 @@ app.config.from_object(config[config_name])
 app.config.from_pyfile('config.py', silent=True)
 
 # Logging
-setup_logging(default_level=logging.DEBUG)
+setup_logging(default_level=logging.INFO)
 
 # Blueprints
 app.register_blueprint(main, url_prefix='/')

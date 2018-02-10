@@ -14,10 +14,18 @@
 
     pip install -r requirements.txt
 
+    export FLASK_CONFIGURATION='development'
+    
+    export DATABASE_URL='<your_connection_uri>'
+    
+    python manage.py upgrade
+    
     python seed.py
-
-    python run.py
-
+    
+    python manage.py runserver
+        
+    
+    
 for de/activating virtual environment:
 
     workon flask
@@ -34,3 +42,4 @@ for de/activating virtual environment:
 5. http://flask-sqlalchemy.pocoo.org/
 6. [RealPython - Flask](https://realpython.com/blog/python/introduction-to-flask-part-1-setting-up-a-static-site/)
 7. https://damyanon.net/post/flask-series-structure/
+8. https://flask-script.readthedocs.io/en/latest/

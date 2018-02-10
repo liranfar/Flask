@@ -1,10 +1,9 @@
-import logging
-
-from app import app, bcrypt
-from app.data.relations import db
+from app import bcrypt
 from app.data.author import Author
 from app.data.book import Book
 
+
+# TODO EXPLORE-FLASK-1: Move seed/data migration into the migration script
 
 def create_authors_and_books(db):
     author1 = Author('Ivan Vazov')
@@ -45,13 +44,7 @@ def create_users(data_store):
         data_store.commit()
         for role in roles:
             data_store.add_role_to_user(user, role)
-        data_store.commit()
+            data_store.commit()
 
 
-with app.app_context():
-    db.drop_all()
-    db.create_all()
-    data_store = app.security.datastore
-    create_authors_and_books(db)
-    create_roles(data_store)
-    create_users(data_store)
+
