@@ -1,8 +1,8 @@
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-POSTGRES_LOCAL_BASE = 'postgresql://postgres:postgres@localhost/'
-DATABASE_NAME = 'explore_flask'
+POSTGRES_BASE = os.getenv('POSTGRES_BASE')
+DATABASE_NAME = os.getenv('DATABASE_NAME', 'explore_flask')
 
 
 class BaseConfig(object):
@@ -10,30 +10,30 @@ class BaseConfig(object):
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CSRF_ENABLED = True
-    SECRET_KEY = os.getenv('SECRET_KEY', 'override_me')
     BCRYPT_LOG_ROUNDS = 13
+    SQLALCHEMY_DATABASE_URI = POSTGRES_BASE + DATABASE_NAME
 
 
 class ProductionConfig(BaseConfig):
     DEBUG = False
-    SECRET_KEY = 'my_precious'
-    SQLALCHEMY_DATABASE_URI = 'postgresql:///todo'
+    SECRET_KEY = 'OVERRIDE_ME'
+
 
 class StagingConfig(BaseConfig):
     DEVELOPMENT = True
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql:///todo'
-    SECRET_KEY = 'my_precious'
+    SECRET_KEY = 'OVERRIDE_ME'
+
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = POSTGRES_LOCAL_BASE + DATABASE_NAME
     BCRYPT_LOG_ROUNDS = 4
+    SECRET_KEY = 'OVERRIDE_ME'
 
 
 class TestingConfig(BaseConfig):
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = POSTGRES_LOCAL_BASE + DATABASE_NAME + '_test'
+    SECRET_KEY = 'OVERRIDE_ME'
     BCRYPT_LOG_ROUNDS = 4
     PRESERVE_CONTEXT_ON_EXCEPTION = False

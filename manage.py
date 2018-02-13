@@ -5,19 +5,20 @@ from flask_migrate import Migrate, MigrateCommand
 
 from app import app, db
 # TODO: do not remove these imports, otherwise alembic will not detect all tables
-from app.data.author import Author
-from app.data.book import Book
-
+# from app.data.author import Author
+# from app.data.book import Book
+from seed import migrate_data
 
 migrate = Migrate(app, db)
 manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
 
+
 # TODO EXPLORE-FLASK-1: Move seed/data migration into the migration script
-# @manager.command
-# def seed():
-#     import seed
+@manager.command
+def seed():
+    migrate_data()
 
 
 @manager.command
@@ -28,6 +29,7 @@ def test():
     if result.wasSuccessful():
         return 0
     return 1
+
 
 if __name__ == '__main__':
     manager.run()

@@ -1,12 +1,8 @@
 import unittest
-
+import os
 from flask_testing import TestCase
-
 from flask import current_app
-
 from app import app
-
-
 from app.common.constants import BASE_DIR
 
 APP_INSTANCE_CONFIG_PATH = BASE_DIR + '/app/instance/config.py'
@@ -19,11 +15,12 @@ class TestDevelopmentConfig(TestCase):
         return app
 
     def test_app_is_development(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'override_me')
+        self.assertFalse(app.config['SECRET_KEY'] is 'OVERRIDE_ME')
         self.assertTrue(app.config['DEBUG'] is True)
         self.assertFalse(current_app is None)
         self.assertTrue(
-            app.config['SQLALCHEMY_DATABASE_URI'] == 'postgresql://postgres:postgres@localhost/explore_flask'
+            app.config['SQLALCHEMY_DATABASE_URI'] == os.getenv('POSTGRES_BASE') + os.getenv('DATABASE_NAME',
+                                                                                            'explore_flask')
         )
 
 
@@ -34,10 +31,11 @@ class TestTestingConfig(TestCase):
         return app
 
     def test_app_is_testing(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'override_me')
+        self.assertFalse(app.config['SECRET_KEY'] is 'OVERRIDE_ME')
         self.assertTrue(app.config['DEBUG'])
         self.assertTrue(
-            app.config['SQLALCHEMY_DATABASE_URI'] == 'postgresql://postgres:postgres@localhost/explore_flask_test'
+            app.config['SQLALCHEMY_DATABASE_URI'] == os.getenv('POSTGRES_BASE') + os.getenv('DATABASE_NAME',
+                                                                                            'explore_flask')
         )
 
 
@@ -48,7 +46,7 @@ class TestProductionConfig(TestCase):
         return app
 
     def test_app_is_production(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'override_me')
+        self.assertFalse(app.config['SECRET_KEY'] is 'OVERRIDE_ME')
         self.assertTrue(app.config['DEBUG'] is False)
 
 
@@ -59,7 +57,7 @@ class TestStagingConfig(TestCase):
         return app
 
     def test_app_is_staging(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'override_me')
+        self.assertFalse(app.config['SECRET_KEY'] is 'OVERRIDE_ME')
         self.assertTrue(app.config['DEBUG'] is False)
 
 

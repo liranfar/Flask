@@ -1,11 +1,9 @@
-from app import bcrypt
+from app import app, db, User, Role
 from app.data.author import Author
 from app.data.book import Book
 
 
-# TODO EXPLORE-FLASK-1: Move seed/data migration into the migration script
-
-def create_authors_and_books(db):
+def create_authors_and_books():
     author1 = Author('Ivan Vazov')
     author2 = Author('Hristo Botev')
 
@@ -20,31 +18,21 @@ def create_authors_and_books(db):
     db.session.commit()
 
 
-def create_roles(data_store):
-    data_store.create_role(name='admin')
-    data_store.commit()
+def create_users_and_roles():
+    role = Role(name='admin')
+    user = User(
+        email='test@test.com',
+        password='test', active=True, roles=[role]
+    )
+    db.session.add(user)
+    db.session.add(role)
+
+    db.session.commit()
 
 
-def create_users(data_store):
-    users = [('admin@test.com', 'admin', '1234', ['admin'], True), \
-             ('user@test.com', 'user', '6789', [], True)]
-    for user in users:
-        email = user[0]
-        username = user[1]
-        password = user[2]
-        is_active = user[4]
-        hashed_password = ""
-        if password is not None:
-            hashed_password = bcrypt.generate_password_hash(password)
-        # logging.info('hashed pass is : {}'.format(hashed_password))
-        roles = [data_store.find_or_create_role(rn) for rn in user[3]]
-        data_store.commit()
-        # TODO: add username
-        user = data_store.create_user(email=email, password=hashed_password, active=is_active)
-        data_store.commit()
-        for role in roles:
-            data_store.add_role_to_user(user, role)
-            data_store.commit()
-
-
-
+def migrate_data():
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        create_users_and_roles()
+        create_authors_and_books()

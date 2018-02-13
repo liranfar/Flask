@@ -10,6 +10,10 @@ class MyAppDatabaseError(MyAppCriticalError):
     """MyApp database error."""
 
 
+class MyAppConfigError(MyAppCriticalError):
+    """Error reading configuration."""
+
+
 class MyAppDependencyError(MyAppCriticalError):
     """Missing dependency error."""
 
@@ -20,6 +24,3 @@ class MyAppOperationalError(Exception):
 
 class MyAppMachineError(MyAppOperationalError):
     """Error managing analysis machine."""
-
-
-
