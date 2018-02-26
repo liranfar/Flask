@@ -7,6 +7,7 @@ from app import app, db
 # TODO: do not remove these imports, otherwise alembic will not detect all tables
 # from app.data.author import Author
 # from app.data.book import Book
+from app.data.blacklist import BlacklistToken
 from seed import migrate_data
 
 migrate = Migrate(app, db)

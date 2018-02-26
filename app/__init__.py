@@ -8,6 +8,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_security import SQLAlchemyUserDatastore, Security
 
+from app.blueprints.auth.views import auth_blueprint
 from app.common import config
 from app.data.relations import db
 from app.data.role import Role
@@ -31,6 +32,7 @@ setup_logging(default_level=logging.INFO)
 # Blueprints
 app.register_blueprint(main, url_prefix='/')
 app.register_blueprint(admin, url_prefix='/admin')
+app.register_blueprint(auth_blueprint)
 
 # Database
 db.init_app(app)

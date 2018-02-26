@@ -1,15 +1,12 @@
 import datetime
-import logging
-
 import jwt
 from flask_security import UserMixin
 
 # TODO from app import app causes import error ( circular dependency )
 import app
-from app import db
+from app.data import db
+from app.data.blacklist import BlacklistToken
 from app.data.relations import roles_users
-
-log = logging.getLogger()
 
 
 class User(db.Model, UserMixin):
@@ -32,7 +29,8 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return '<User %r>' % self.email
 
-    def encode_auth_token(self, user_id):
+    @staticmethod
+    def encode_auth_token(user_id):
         """
         Generates the Auth Token
         :return: string
@@ -43,11 +41,30 @@ class User(db.Model, UserMixin):
                 'iat': datetime.datetime.utcnow(),
                 'sub': user_id
             }
-            # TODO allow access to app.config object, for now I get import error
+
             return jwt.encode(
                 payload,
-                'change_secret_key',
+                app.app.config.get('SECRET_KEY'),
                 algorithm='HS256'
             )
         except Exception as e:
             return e
+
+    @staticmethod
+    def decode_auth_token(auth_token):
+        """
+        Decodes the auth token
+        :param auth_token:
+        :return: integer|string
+        """
+        try:
+            payload = jwt.decode(auth_token, app.app.config.get('SECRET_KEY'))
+            is_blacklisted_token = BlacklistToken.check_blacklist(auth_token)
+            if is_blacklisted_token:
+                return 'Token blacklisted. Please log in again.'
+            else:
+                return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Signature expired. Please log in again.'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please log in again.'
