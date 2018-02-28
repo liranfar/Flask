@@ -1,5 +1,7 @@
 import os
 
+import datetime
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 POSTGRES_BASE = os.getenv('POSTGRES_BASE')
 DATABASE_NAME = os.getenv('DATABASE_NAME', 'explore_flask')
@@ -37,3 +39,4 @@ class TestingConfig(BaseConfig):
     SECRET_KEY = 'OVERRIDE_ME'
     BCRYPT_LOG_ROUNDS = 4
     PRESERVE_CONTEXT_ON_EXCEPTION = False
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(seconds=5)

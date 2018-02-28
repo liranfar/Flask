@@ -12,7 +12,7 @@ from app.blueprints.auth.views import auth_blueprint
 from app.common import config
 from app.data.relations import db
 from app.data.role import Role
-from app.data.user import User
+from app.data.user import User, login_manager
 from app.log.log import setup_logging
 from blueprints.admin.views import admin
 from blueprints.main.views import main
@@ -41,3 +41,6 @@ db.init_app(app)
 bcrypt = Bcrypt(app)
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 app.security = Security(app, user_datastore)
+
+# TODO: group all login_manager init commands together ( there are moe in user module )
+login_manager.init_app(app)

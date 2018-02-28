@@ -1,11 +1,20 @@
-from flask import Blueprint, request, make_response, jsonify
+from flask import Blueprint, request, make_response, jsonify, session
 from flask.views import MethodView
+from flask_login import login_required
 
 import app
-from app.data.blacklist import BlacklistToken
-from app.data.user import User
+from app.data.user import User, login_manager
 
 auth_blueprint = Blueprint('auth', __name__)
+
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    responseObject = {
+                    'status': 'fail',
+                    'message': 'user is not logged in'
+                }
+    return make_response(jsonify(responseObject)), 401
 
 
 class RegisterAPI(MethodView):
@@ -23,7 +32,6 @@ class RegisterAPI(MethodView):
                 user = User(
                     email=post_data.get('email'),
                     password=post_data.get('password'),
-                    active=True,
                     roles=[]
                 )
 
@@ -31,12 +39,13 @@ class RegisterAPI(MethodView):
                 # insert the user
                 db.session.add(user)
                 db.session.commit()
-                # generate the auth token
-                auth_token = user.encode_auth_token(user.id)
+
+                from flask_login import login_user
+                login_user(user, remember=False)
+
                 responseObject = {
                     'status': 'success',
-                    'message': 'Successfully registered.',
-                    'auth_token': auth_token.decode()
+                    'message': 'Successfully registered.'
                 }
                 return make_response(jsonify(responseObject)), 201
 
@@ -49,7 +58,7 @@ class RegisterAPI(MethodView):
         else:
             responseObject = {
                 'status': 'fail',
-                'message': 'User already exists. Please Log in.',
+                'message': 'User already exists. Please Log in.'
             }
             return make_response(jsonify(responseObject)), 202
 
@@ -70,14 +79,23 @@ class LoginAPI(MethodView):
             if user and app.bcrypt.check_password_hash(
                     user.password, post_data.get('password')
             ):
-                auth_token = user.encode_auth_token(user.id)
-                if auth_token:
-                    responseObject = {
-                        'status': 'success',
-                        'message': 'Successfully logged in.',
-                        'auth_token': auth_token.decode()
-                    }
-                    return make_response(jsonify(responseObject)), 200
+                from app import db
+                # user.is_authenticated = True
+                db.session.add(user)
+                db.session.commit()
+
+                from flask_login import login_user
+                # if you change remember attribute to true it will cause
+                # some issues with session duration timeout
+                # see https://www.jordanbonser.com/flask-session-timeout.html
+                login_user(user, remember=False)
+
+                responseObject = {
+                    'status': 'success',
+                    'message': 'Successfully logged in.'
+                }
+
+                return make_response(jsonify(responseObject)), 200
             else:
                 responseObject = {
                     'status': 'fail',
@@ -97,44 +115,25 @@ class UserAPI(MethodView):
     """
     User Resource
     """
+
     def get(self):
-        # get the auth token
-        auth_header = request.headers.get('Authorization')
-        if auth_header:
-            try:
-                auth_token = auth_header.split(" ")[1]
-            except IndexError:
-                responseObject = {
-                    'status': 'fail',
-                    'message': 'Bearer token malformed.'
-                }
-                return make_response(jsonify(responseObject)), 401
-        else:
-            auth_token = ''
-        if auth_token:
-            resp = User.decode_auth_token(auth_token)
-            if not isinstance(resp, str):
-                user = User.query.filter_by(id=resp).first()
-                responseObject = {
-                    'status': 'success',
-                    'data': {
-                        'user_id': user.id,
-                        'email': user.email,
-                        'active': user.active
-                    }
-                }
-                return make_response(jsonify(responseObject)), 200
+        from flask_login import current_user
+        if current_user:
             responseObject = {
-                'status': 'fail',
-                'message': resp
+                'status': 'success',
+                'data': {
+                    'user_id': current_user.id,
+                    'email': current_user.email,
+                    'is_authenticated': current_user.is_authenticated
+                }
             }
-            return make_response(jsonify(responseObject)), 401
-        else:
-            responseObject = {
-                'status': 'fail',
-                'message': 'Provide a valid auth token.'
-            }
-            return make_response(jsonify(responseObject)), 401
+            return make_response(jsonify(responseObject)), 200
+
+        responseObject = {
+            'status': 'fail',
+            'message': 'There is no user'
+        }
+        return make_response(jsonify(responseObject)), 401
 
 
 class LogoutAPI(MethodView):
@@ -142,46 +141,31 @@ class LogoutAPI(MethodView):
     Logout Resource
     """
 
+    @login_required
     def post(self):
-        # get auth token
-        auth_header = request.headers.get('Authorization')
-        if auth_header:
-            auth_token = auth_header.split(" ")[1]
-        else:
-            auth_token = ''
-        if auth_token:
-            resp = User.decode_auth_token(auth_token)
-            if not isinstance(resp, str):
-                # mark the token as blacklisted
-                blacklist_token = BlacklistToken(token=auth_token)
-                try:
-                    from app import db
-                    # insert the token
-                    db.session.add(blacklist_token)
-                    db.session.commit()
-                    responseObject = {
-                        'status': 'success',
-                        'message': 'Successfully logged out.'
-                    }
-                    return make_response(jsonify(responseObject)), 200
-                except Exception as e:
-                    responseObject = {
-                        'status': 'fail',
-                        'message': e
-                    }
-                    return make_response(jsonify(responseObject)), 200
-            else:
-                responseObject = {
-                    'status': 'fail',
-                    'message': resp
-                }
-                return make_response(jsonify(responseObject)), 401
-        else:
+
+        try:
+            from app import db
+            # insert the token
+            from flask_login import current_user
+            user = current_user
+            db.session.add(user)
+            db.session.commit()
+            from flask_login import logout_user
+            logout_user()
+
+            responseObject = {
+                'status': 'success',
+                'message': 'Successfully logged out.'
+            }
+
+            return make_response(jsonify(responseObject)), 200
+        except Exception as e:
             responseObject = {
                 'status': 'fail',
-                'message': 'Provide a valid auth token.'
+                'message': e.message
             }
-            return make_response(jsonify(responseObject)), 403
+            return make_response(jsonify(responseObject)), 200
 
 
 # define the API resources
