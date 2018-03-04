@@ -33,7 +33,7 @@ setup_logging(default_level=logging.INFO)
 # Blueprints
 app.register_blueprint(main, url_prefix='/')
 app.register_blueprint(admin, url_prefix='/admin')
-app.register_blueprint(auth_blueprint)
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 # Database
 db.init_app(app)

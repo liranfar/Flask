@@ -26,8 +26,7 @@ def display_tasks():
     return jsonify(books)
 
 
-# TODO change to POST
-@main.route('users/add/<author_name>')
+@main.route('authors/add/<author_name>', methods=['POST'])
 def add_author(author_name):
     logging.debug("got an author with name : {}".format(author_name))
 
