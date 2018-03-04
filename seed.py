@@ -22,7 +22,7 @@ def create_users_and_roles():
     role = Role(name='admin')
     user = User(
         email='test@test.com',
-        password='test', active=True, roles=[role]
+        password='test', roles=[role]
     )
     db.session.add(user)
     db.session.add(role)

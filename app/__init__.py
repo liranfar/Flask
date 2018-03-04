@@ -6,13 +6,14 @@ import os
 
 from flask import Flask
 from flask_bcrypt import Bcrypt
+from login import login_manager
 from flask_security import SQLAlchemyUserDatastore, Security
 
 from app.blueprints.auth.views import auth_blueprint
 from app.common import config
 from app.data.relations import db
 from app.data.role import Role
-from app.data.user import User, login_manager
+from app.data.user import User
 from app.log.log import setup_logging
 from blueprints.admin.views import admin
 from blueprints.main.views import main
@@ -42,5 +43,6 @@ bcrypt = Bcrypt(app)
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 app.security = Security(app, user_datastore)
 
-# TODO: group all login_manager init commands together ( there are moe in user module )
+
+# Login Manager
 login_manager.init_app(app)

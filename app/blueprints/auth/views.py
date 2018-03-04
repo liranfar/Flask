@@ -3,18 +3,9 @@ from flask.views import MethodView
 from flask_login import login_required
 
 import app
-from app.data.user import User, login_manager
+from app.data.user import User
 
 auth_blueprint = Blueprint('auth', __name__)
-
-
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    responseObject = {
-                    'status': 'fail',
-                    'message': 'user is not logged in'
-                }
-    return make_response(jsonify(responseObject)), 401
 
 
 class RegisterAPI(MethodView):
