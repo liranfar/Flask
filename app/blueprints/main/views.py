@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
 
 from app.data.author import Author
 from app.data.relations import db
@@ -10,7 +10,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return "Main"
+    return render_template('index.html')
 
 
 @main.route('tasks/')
@@ -35,3 +35,9 @@ def add_author(author_name):
     db.session.commit()
 
     return jsonify({'data': 'success'})
+
+
+@main.route('hello')
+def hello():
+    # return jsonify({'data': 'success'})
+    return render_template('hello.html')

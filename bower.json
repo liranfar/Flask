@@ -1,0 +1,22 @@
+{
+  "name": "exploreFlask",
+  "homepage": "https://github.com/liranfar/Flask",
+  "authors": [
+    "liranfar <l.farage@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "react": "^16.1.0",
+    "babel": "^5.8.38"
+  }
+}
