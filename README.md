@@ -4,40 +4,42 @@
 
 ## Usage
 
-    git clone https://github.com/liranfar/Flask.git flask
+    $ git clone https://github.com/liranfar/Flask.git flask
 
-    cd flask
+    $ cd flask
 
-    sudo apt-get install  pip virtualenv virtualenvwrapper
+    $ sudo apt-get install  pip virtualenv virtualenvwrapper
 
-    mkvirtualenv flask
+    $ mkvirtualenv flask
 
-    pip install -r requirements.txt
+    $ pip install -r requirements.txt
 
-    export FLASK_CONFIGURATION='development'
+    $ export FLASK_CONFIGURATION='development'
     
-    export DATABASE_URL='<your_connection_uri>'
+    $ export DATABASE_URL='<your_connection_uri>'
     
-    python manage.py upgrade
+    $ python manage.py upgrade
     
-    python seed.py
+    $ python seed.py
     
-    python manage.py runserver    
+    $ python manage.py runserver    
     
 for de/activating virtual environment:
 
-    workon flask
+    $ workon flask
 
-    deactivate
+    $ deactivate
 
 ## Front-End
-    npm install
+    $ sudo npm install -g gulp bower
     
-    bower install
+    $ npm install
     
-    gulp
+    $ bower install
+    
+    $ gulp
 
-* Install & enable the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) Chrome extension 
+* Install & enable [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) Chrome extension 
 
 ## Resources
 
