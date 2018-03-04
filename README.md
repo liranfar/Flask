@@ -22,9 +22,7 @@
     
     python seed.py
     
-    python manage.py runserver
-        
-    
+    python manage.py runserver    
     
 for de/activating virtual environment:
 
@@ -32,6 +30,14 @@ for de/activating virtual environment:
 
     deactivate
 
+## Front-End
+    npm install
+    
+    bower install
+    
+    gulp
+
+* Install & enable the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) Chrome extension 
 
 ## Resources
 

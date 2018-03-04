@@ -28,6 +28,7 @@
     "gulp-connect": "^5.5.0",
     "gulp-less": "^4.0.0",
     "gulp-livereload": "^3.8.1",
+    "gulp-open": "^3.0.0",
     "gulp-server-livereload": "^1.9.2",
     "gulp-size": "^2.1.0",
     "reactify": "^1.1.1"
