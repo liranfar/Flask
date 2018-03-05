@@ -26,24 +26,31 @@ app = Flask(__name__,
             instance_relative_config=True)  # instance_relative_config implies loading config from instance folder
 
 # Configuration
+logging.debug("Reading Configuration...")
 config_name = os.getenv('FLASK_CONFIGURATION', 'default')
 app.config.from_object(config[config_name])
 # Load the configuration from the instance folder
-app.config.from_pyfile('config.py', silent=True)
+if app.config.from_pyfile('config.py', silent=True):
+    logging.info("Successfully read private configuration instance file.")
+
 
 # Blueprints
+logging.debug("Initializing Blueprints...")
 app.register_blueprint(main, url_prefix='/')
 app.register_blueprint(admin, url_prefix='/admin')
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+
 # Database
+logging.debug("Initializing Database...")
 db.init_app(app)
 
 # Security
+logging.debug("Initializing Bcrypt...")
 bcrypt = Bcrypt(app)
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 app.security = Security(app, user_datastore)
 
-
 # Login Manager
+logging.debug("Initializing LoginManager...")
 login_manager.init_app(app)
