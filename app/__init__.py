@@ -18,6 +18,10 @@ from app.log.log import setup_logging
 from blueprints.admin.views import admin
 from blueprints.main.views import main
 
+# Logging
+setup_logging()
+
+# app
 app = Flask(__name__,
             instance_relative_config=True)  # instance_relative_config implies loading config from instance folder
 
@@ -26,9 +30,6 @@ config_name = os.getenv('FLASK_CONFIGURATION', 'default')
 app.config.from_object(config[config_name])
 # Load the configuration from the instance folder
 app.config.from_pyfile('config.py', silent=True)
-
-# Logging
-setup_logging(default_level=logging.INFO)
 
 # Blueprints
 app.register_blueprint(main, url_prefix='/')

@@ -23,7 +23,7 @@ class ConsoleHandler(logging.StreamHandler):
 
 
 def setup_logging(
-        default_path='logging.yaml',
+        default_path='app/log/logging.yaml',
         default_level=logging.INFO,
         env_key='LOG_CFG'
 ):
