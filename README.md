@@ -38,8 +38,10 @@ for de/activating virtual environment:
     $ bower install
     
     $ gulp
-
+    
+   
 * Install & enable [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) Chrome extension 
+* Make sure to disable browser caching in developer tools (checkbox)
 
 ## Resources
 
@@ -51,3 +53,5 @@ for de/activating virtual environment:
 6. [RealPython - Flask](https://realpython.com/blog/python/introduction-to-flask-part-1-setting-up-a-static-site/)
 7. https://damyanon.net/post/flask-series-structure/
 8. https://flask-script.readthedocs.io/en/latest/
+9. [React](https://reactjs.org/)
+9. [Gulp](https://gulpjs.com/)
