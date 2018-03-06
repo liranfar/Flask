@@ -43,11 +43,11 @@ gulp.task('open', function(){
 
 gulp.task('babelify', function () {
   browserify('./app/static/scripts/jsx/main.js')
-    .transform(babelify.configure({presets: ["es2015" , "react"]}))
+    .transform(babelify.configure({presets: ["es2015" , "react", "stage-3"]}))
     .bundle()
     .pipe(source('index.js'))
-    .pipe(buffer())
-    .pipe(uglify())
+    //.pipe(buffer())
+    //.pipe(uglify())
     .pipe(gulp.dest('./app/static/scripts/js'))
     .pipe(livereload()
     );
@@ -59,7 +59,7 @@ gulp.task('vendor', function() {
     .require(dependencies)
     .bundle()
     .pipe(source('bundle.js'))
-    .pipe(buffer())
-    .pipe(uglify())
+    //.pipe(buffer())
+    //.pipe(uglify())
     .pipe(gulp.dest('./app/static/scripts/js/vendor'));
 });

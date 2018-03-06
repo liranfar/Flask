@@ -1,24 +1,15 @@
-import React, { Component } from 'react';
-import ReactDOM  from 'react-dom';
-
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      articles: [
-        { title: "React-Redux", id: 1 },
-        { title: "Hello From React!", id: 2 }
-      ]
-    };
-  }
-  render() {
-    const { articles } = this.state;
-    return <ul>{articles.map(el => <li key={el.id}>{el.title}</li>)}</ul>;
-  }
-}
-
-ReactDOM.render(
-    React.createElement(App, null),
-    document.getElementById('root')
-);
-
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import todoApp from './reducers'
+import App from './components/App'
+ 
+let store = createStore(todoApp)
+ 
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
