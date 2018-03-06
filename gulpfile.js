@@ -21,7 +21,7 @@ gulp.task('del', function () {
 
 gulp.task('default', ['del','vendor','babelify', 'open'], function() {
     livereload.listen();
-    gulp.watch('./app/static/scripts/jsx/*.js', ['babelify']);
+    gulp.watch('./app/static/scripts/jsx/**/*.js', ['babelify']);
     gulp.watch('./app/static/less/*.less', ['less']);
 });
 

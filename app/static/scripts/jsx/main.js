@@ -1,11 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import todoApp from './reducers'
 import App from './components/App'
+import dataService from "./services/data-service";
  
-let store = createStore(todoApp)
+let store = createStore(todoApp, {}, compose(applyMiddleware(dataService)) ,window.devToolsExtension ? window.devToolsExtension() : f => f);
  
 render(
   <Provider store={store}>
@@ -13,3 +14,5 @@ render(
   </Provider>,
   document.getElementById('root')
 )
+
+store.dispatch({type: 'GET_TODO_DATA'})

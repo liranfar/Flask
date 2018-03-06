@@ -55,3 +55,5 @@ for de/activating virtual environment:
 8. https://flask-script.readthedocs.io/en/latest/
 9. [React](https://reactjs.org/)
 9. [Gulp](https://gulpjs.com/)
+10. [Redux](https://redux.js.org/)
+11. [soham kamani's blog](https://www.sohamkamani.com/blog/2017/03/31/react-redux-connect-explained/)
