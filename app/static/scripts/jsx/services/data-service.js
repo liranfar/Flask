@@ -2,18 +2,15 @@ import axios from 'axios'
 
 const dataService = store => next => action => {
     console.log("dataService has been activated")
-    //probably the waiting sign for asynchronous action
     next(action)
-
 
     switch ( action.type ) {
         case 'GET_TODO_DATA':
             axios
-                .get('todo-data.json')
+                .get('data/todo-data.json')
                 .then(function (response) {
                     console.log(response);
-                    // const data = JSON.parse(response.data)
-                    const data = response.data
+                    const data = JSON.parse(res.text)
                     next({
                         type: 'GET_TODO_DATA_RECEIVED',
                         data

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
  
 const Link = ({ active, children, onClick }) => {
   if (active) {
-      //console.log("children is: " + JSON.stringify({children}))
+      console.log("children is: " + JSON.stringify({children}))
     return <span>{children}</span>
   }
  
