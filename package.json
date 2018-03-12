@@ -38,6 +38,7 @@
     "react": "^16.2.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
+    "run-sequence": "^2.2.1",
     "uglify": "^0.1.5",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"

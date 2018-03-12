@@ -11,6 +11,8 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var packageJSON = require('./package.json');
 var dependencies = Object.keys(packageJSON && packageJSON.dependencies || {});
+var runSequence = require('run-sequence');
+
 
 //Todo: add error handler which prevents the process crushing
 // tasks
@@ -19,7 +21,9 @@ gulp.task('del', function () {
 });
 
 
-gulp.task('default', ['del','vendor','babelify', 'open'], function() {
+gulp.task('default', function() {
+    //perform tasks sequentially
+    runSequence('del','vendor','babelify', 'open')
     livereload.listen();
     gulp.watch('./app/static/scripts/jsx/**/*.js', ['babelify']);
     gulp.watch('./app/static/less/*.less', ['less']);
