@@ -13,17 +13,22 @@ def index():
     return render_template('index.html')
 
 
-@main.route('tasks/')
+@main.route('todo-data.json')
 def display_tasks():
-    books = {
-        "Learn Python The Hard Way": {
-            "author": "Shaw, Zed",
-            "rating": "3.92",
-            "image": "ef0ceaab-32a8-47fb-ba13-c0b362d970da.jpg"
+    tasks = [
+        {
+            "id": 0,
+            "text": "Make API calls simpler",
+            "completed": False
+        },
+        {
+            "id": 1,
+            "text": "Profit",
+            "completed": False
         }
-    }
+    ]
 
-    return jsonify(books)
+    return jsonify(tasks)
 
 
 @main.route('authors/add/<author_name>', methods=['POST'])

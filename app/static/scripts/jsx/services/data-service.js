@@ -7,10 +7,10 @@ const dataService = store => next => action => {
     switch ( action.type ) {
         case 'GET_TODO_DATA':
             axios
-                .get('data/todo-data.json')
+                .get('todo-data.json')
                 .then(function (response) {
                     console.log(response);
-                    const data = JSON.parse(res.text)
+                    const data = response.data
                     next({
                         type: 'GET_TODO_DATA_RECEIVED',
                         data
