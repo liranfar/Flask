@@ -1,11 +1,11 @@
 import React from 'react'
-// import LoginForm from "../containers/LoginForm";
-// import TodoSection from "../containers/TodoSection";
-import Routes from "../nevigation/routes";
 import {Link} from "react-router-dom";
+import Routes from "../nevigation/routes";
+import Auth from "../containers/Auth";
 
 
-const App = () => (
+const App = () => {
+    return(
     <div>
         <div className="navigation-bar" style={{
             display: 'block',
@@ -13,16 +13,17 @@ const App = () => (
             position: 'relative'
         }}>
             <h1> Hello React! </h1>
+
             <ul>
-                <li><Link to="/">todo</Link></li>
-                <li><Link to="/login">login</Link></li>
+                <li><Link to="/">index</Link></li>
+                <li><Link to="/todo">todo</Link></li>
+                <Auth />
             </ul>
         </div>
 
-        {/*<TodoSection />*/}
-        {/*<LoginForm />*/}
         <Routes/>
     </div>
-)
+)}
+
 
 export default App

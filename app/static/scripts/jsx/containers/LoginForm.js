@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
     console.log("LoginForm: state is:")
     console.log(state)
     return {
-        active: true
+        isAuthenticated: state.login
     }
 }
 
