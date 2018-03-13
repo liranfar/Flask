@@ -26,6 +26,7 @@ gulp.task('default', function() {
     runSequence('del','vendor','babelify', 'open')
     livereload.listen();
     gulp.watch('./app/static/scripts/jsx/**/*.js', ['babelify']);
+    gulp.watch('./app/templates/**/*.html', livereload());
     gulp.watch('./app/static/less/*.less', ['less']);
 });
 
