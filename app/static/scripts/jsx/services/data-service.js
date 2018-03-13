@@ -28,14 +28,14 @@ const dataService = store => next => action => {
         case 'LOGIN_REQUEST':
             console.log('LOGIN_REQUEST has fired')
             axios.post('/auth/login', {
-                email: action.u,
-                password: action.p
+                email: action.email,
+                password: action.password
             })
                 .then(function (response) {
                     console.log(response);
                     next({
                         type: 'SUCCESS_LOG_IN',
-                        userName: action.u
+                        email: action.email
                     })
                 })
                 .catch(function (error) {

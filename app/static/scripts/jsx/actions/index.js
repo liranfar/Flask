@@ -27,11 +27,11 @@ export const VisibilityFilters = {
     SHOW_ACTIVE: 'SHOW_ACTIVE'
 }
 
-export const applyLogin = (userName,password)  => {
+export const applyLogin = (email,password)  => {
     return {
         type: 'LOGIN_REQUEST',
-        u: userName,
-        p: password
+        email: email,
+        password: password
     }
 
 }
